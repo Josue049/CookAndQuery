@@ -2,194 +2,153 @@ package com.example.cookandquery;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
+import javafx.stage.Stage;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
-import javafx.scene.shape.Polygon;
-
 import java.util.HashSet;
 import java.util.Set;
+import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 
 public class Juego extends Application {
-
-    int tam = 70;
-    private GraphicsContext graficos;
-    private Scene escena;
-
-    private Image fondo;
-    private Image[] animacionAbajo;
-    private Image[] animacionArriba;
-    private Image[] animacionIzquierda;
-    private Image[] animacionDerecha;
-    private Polygon areaPermitida;
-
-    private int frameActual = 0;
-    private long ultimoCambio = 0;
-    private long velocidadAnimacion = 100_000_000; // 100ms
-
-    private enum Direccion { ABAJO, ARRIBA, IZQUIERDA, DERECHA }
-    private Direccion direccionActual = Direccion.ABAJO;
-
-    private double personajeX = 500;
-    private double personajeY = 300;
-    private double velocidad = 3;
-
-    private Set<KeyCode> teclasPresionadas = new HashSet<>();
-
-    public static void main(String[] args){
-        launch(args);
-    }
+    private Image[] animaciones = new Image[7];
 
     @Override
     public void start(Stage ventana) {
-        Group root = new Group();
-        escena = new Scene(root);
-        Canvas lienzo = new Canvas(800, 750);
-        root.getChildren().add(lienzo);
-        graficos = lienzo.getGraphicsContext2D();
+        final int anchoVentana = 800;
+        final int altoVentana = 500;
 
-        cargarRecursos();
-        gestionarEventos();
-        bucleJuego();
+        // Crear ventana con fondo
+        Ventanas escenaJuego = new Ventanas(ventana, anchoVentana, altoVentana, "Cook And Query",
+                "src/main/resources/EscenarioNivel1.png");
 
-        ventana.setScene(escena);
-        ventana.setTitle("Query and Cook");
-        ventana.show();
-    }
+        // Crear personajes
+        Personaje chef = new Personaje(100, 100, "src/main/resources/SpriteChefFinal/down/1.png");
+        Personaje chefAnimado = new Personaje(300, 200, "src/main/resources/SpriteChefFinal/down", 7, "", 30);
+        Personaje NuevoChef = new Personaje(300, 300, "src/main/resources/SpriteChefFinal/up", 7, "up", 30);
 
-    private void cargarRecursos() {
-        fondo = new Image("file:src/main/resources/EscenarioNivel1.png");
+        // Obtener el contexto gráfico
+        GraphicsContext gc = escenaJuego.getGraficos();
+        Set<KeyCode> teclasActivas = new HashSet<>();
+        escenaJuego.getEscena().setOnKeyPressed(e -> teclasActivas.add(e.getCode()));
+        escenaJuego.getEscena().setOnKeyReleased(e -> teclasActivas.remove(e.getCode()));
 
-        animacionAbajo = new Image[] {
-                new Image("file:src/main/resources/SpriteChefFinal/down/1.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/down/2.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/down/3.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/down/4.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/down/5.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/down/6.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/down/7.png", tam, tam, true, true),
-        };
+        // Cargar animaciones
+        Image[] chefArriba = new Image[7];
+        Image[] chefAbajo = new Image[7];
+        Image[] chefIzquierda = new Image[7];
+        Image[] chefDerecha = new Image[7];
+        cargarAnimacion("src/main/resources/SpriteChefFinal/up", "up", chefArriba);
+        cargarAnimacion("src/main/resources/SpriteChefFinal/down", "", chefAbajo);
+        cargarAnimacion("src/main/resources/SpriteChefFinal/left", "left", chefIzquierda);
+        cargarAnimacion("src/main/resources/SpriteChefFinal/right", "right", chefDerecha);
+        animaciones = chefAbajo; // Inicializar con la animación de abajo
 
-        animacionArriba = new Image[] {
-                new Image("file:src/main/resources/SpriteChefFinal/up/up1.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/up/up2.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/up/up3.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/up/up4.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/up/up5.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/up/up6.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/up/up7.png", tam, tam, true, true),
-        };
+        gc.fillPolygon(
+                new double[] { 400, 500, 520, 420 }, // X de las esquinas
+                new double[] { 100, 100, 400, 400 }, // Y de las esquinas
+                4);
 
-        animacionIzquierda = new Image[] {
-                new Image("file:src/main/resources/SpriteChefFinal/left/left1.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/left/left2.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/left/left3.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/left/left4.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/left/left5.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/left/left6.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/left/left7.png", tam, tam, true, true),
-        };
+        gc.setFill(Color.BROWN); // por ejemplo, una mesa
 
-        animacionDerecha = new Image[] {
-                new Image("file:src/main/resources/SpriteChefFinal/right/right1.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/right/right2.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/right/right3.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/right/right4.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/right/right5.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/right/right6.png", tam, tam, true, true),
-                new Image("file:src/main/resources/SpriteChefFinal/right/right7.png", tam, tam, true, true),
-        };
-    }
+        double[] xPoligono = { 400, 500, 520, 420 };
+        double[] yPoligono = { 100, 100, 400, 400 };
 
-    private void gestionarEventos() {
-        escena.setOnKeyPressed((KeyEvent evento) -> teclasPresionadas.add(evento.getCode()));
-        escena.setOnKeyReleased((KeyEvent evento) -> teclasPresionadas.remove(evento.getCode()));
-    }
 
-    private void bucleJuego() {
-        // Definir las 4 esquinas del área permitida (puedes ajustar los valores)
-        areaPermitida = new Polygon(
-                226.0, 112.0,  // esquina superior izquierda
-                600.0, 112.0,  // esquina superior derecha
-                630.0, 355.0,  // esquina inferior derecha
-                190.0, 355.0   // esquina inferior izquierda
-        );
-
+        
+        // LOOP DEL JUEGO
         new AnimationTimer() {
             @Override
-            public void handle(long ahora) {
-                actualizar(ahora);
-                pintar();
+            public void handle(long now) {
+                // Limpiar pantalla
+                gc.clearRect(0, 0, anchoVentana, altoVentana);
+
+                // Redibujar fondo (si quieres que se vea siempre)
+                escenaJuego.dibujarFondo();
+
+                // Actualizar y dibujar personajes
+                // chef.dibujar(gc);
+                chefAnimado.refrescarAnimacion(now, gc, animaciones);
+                NuevoChef.refrescarAnimacion(now, gc, animaciones);
+
+                if (teclasActivas.contains(KeyCode.UP) || teclasActivas.contains(KeyCode.W)) {
+                    animaciones = chefArriba;
+                    chefAnimado.mover(0, -5);
+                }
+                if (teclasActivas.contains(KeyCode.DOWN) || teclasActivas.contains(KeyCode.S)) {
+                    animaciones = chefAbajo;
+                    chefAnimado.mover(0, 5);
+                }
+                if (teclasActivas.contains(KeyCode.LEFT) || teclasActivas.contains(KeyCode.A)) {
+                    animaciones = chefIzquierda;
+                    chefAnimado.mover(-5, 0);
+                }
+                if (teclasActivas.contains(KeyCode.RIGHT) || teclasActivas.contains(KeyCode.D)) {
+                    animaciones = chefDerecha;
+                    chefAnimado.mover(5, 0);
+                }
+                gc.fillPolygon(
+                        new double[] { 400, 500, 520, 420 }, // X de las esquinas
+                        new double[] { 100, 100, 400, 400 }, // Y de las esquinas
+                        4);
+
+                if (hayColision(xPoligono, yPoligono, chefAnimado)) {
+                    System.out.println("¡Colisión detectada con el polígono!");
+                    chefAnimado.mover(-5, 0);
+                }
             }
         }.start();
+
     }
 
-    private void actualizar(long ahora) {
-        double nuevaX = personajeX;
-        double nuevaY = personajeY;
-
-        if (teclasPresionadas.contains(KeyCode.W)) {
-            nuevaY -= velocidad;
-            direccionActual = Direccion.ARRIBA;
-        }
-        if (teclasPresionadas.contains(KeyCode.S)) {
-            nuevaY += velocidad;
-            direccionActual = Direccion.ABAJO;
-        }
-        if (teclasPresionadas.contains(KeyCode.A)) {
-            nuevaX -= velocidad;
-            direccionActual = Direccion.IZQUIERDA;
-        }
-        if (teclasPresionadas.contains(KeyCode.D)) {
-            nuevaX += velocidad;
-            direccionActual = Direccion.DERECHA;
-        }
-
-        // Validar si el centro del personaje estaría dentro del área permitida
-        double centroX = nuevaX + tam / 2.0;
-        double centroY = nuevaY + tam / 2.0;
-
-        if (areaPermitida.contains(centroX, centroY)) {
-            personajeX = nuevaX;
-            personajeY = nuevaY;
-        }
-
-        // Controlar cambio de frame para animación
-        if (ahora - ultimoCambio > velocidadAnimacion) {
-            frameActual = (frameActual + 1) % getAnimacionActual().length;
-            ultimoCambio = ahora;
+    public void cargarAnimacion(String carpetaSprites, String nombreArchivos, Image[] listaAnimacion) {
+        for (int i = 0; i < animaciones.length; i++) {
+            String ruta = String.format("file:%s/%s%d.png", carpetaSprites, nombreArchivos, i + 1);
+            listaAnimacion[i] = new Image(ruta, 70, 70, true, true);
         }
     }
 
+    public boolean hayColision(double[] xPoligono, double[] yPoligono, Personaje personaje) {
+        double px = personaje.getX();
+        double py = personaje.getY();
+        double tamaño = 70;
 
-    private Image[] getAnimacionActual() {
-        return switch (direccionActual) {
-            case ARRIBA -> animacionArriba;
-            case ABAJO -> animacionAbajo;
-            case IZQUIERDA -> animacionIzquierda;
-            case DERECHA -> animacionDerecha;
+        // Coordenadas de las 4 esquinas del personaje
+        double[][] esquinas = {
+                { px, py }, // esquina superior izquierda
+                { px + tamaño, py }, // esquina superior derecha
+                { px, py + tamaño }, // esquina inferior izquierda
+                { px + tamaño, py + tamaño } // esquina inferior derecha
         };
+
+        for (double[] esquina : esquinas) {
+            if (puntoDentroPoligono(xPoligono, yPoligono, esquina[0], esquina[1])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    private void pintar() {
-        graficos.clearRect(0, 0, 800, 600);
+    // Algoritmo de punto-en-polígono (ray-casting)
+    public boolean puntoDentroPoligono(double[] xPoligono, double[] yPoligono, double x, double y) {
+        int n = xPoligono.length;
+        boolean dentro = false;
 
-        graficos.drawImage(fondo, 0, 0, 800, 450);
-        graficos.drawImage(getAnimacionActual()[frameActual], personajeX, personajeY);
+        for (int i = 0, j = n - 1; i < n; j = i++) {
+            boolean intersecta = (yPoligono[i] > y) != (yPoligono[j] > y) &&
+                    (x < (xPoligono[j] - xPoligono[i]) * (y - yPoligono[i]) / (yPoligono[j] - yPoligono[i])
+                            + xPoligono[i]);
 
-        /*
-        graficos.setStroke(javafx.scene.paint.Color.RED);
-        graficos.setLineWidth(2);
-        graficos.strokePolygon(
-                new double[]{196, 600, 632, 160},
-                new double[]{112, 112, 390, 390},
-                4
-        );*/
+            if (intersecta) {
+                dentro = !dentro;
+            }
+        }
 
+        return dentro;
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }
