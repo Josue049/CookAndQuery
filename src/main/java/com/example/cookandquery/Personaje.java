@@ -18,9 +18,11 @@ public class Personaje {
     private int ancho;
 
     // Constructor para imagen estática
-    public Personaje(double x, double y, String rutaImagen) {
+    public Personaje(double x, double y, String rutaImagen, int alto, int ancho) {
         this.x = x;
         this.y = y;
+        this.alto = alto;
+        this.ancho = ancho;
         this.sprite = new Image("file:" + rutaImagen, alto, ancho, true, true);
         this.usarAnimacion = false;
     }
@@ -76,6 +78,13 @@ public class Personaje {
 
     public double getY() {
         return y;
+    }
+
+    public void setSprite(String sprite, int alto, int ancho, int x, int y) {
+        this.sprite = new Image("file:" + sprite, alto, ancho, true, true);
+        this.x = x;
+        this.y = y;
+        this.usarAnimacion = false; // Cambia a imagen estática
     }
 }
 // Nota de Josué para Boris: Asegúrate de que las rutas de las imágenes sean

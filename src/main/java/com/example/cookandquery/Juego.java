@@ -21,11 +21,10 @@ public class Juego extends Application {
 
 
         // Crear ventana con fondo
-        Ventanas escenaJuego = new Ventanas(ventana, anchoVentana, altoVentana, "Cook And Query",
-                "src/main/resources/EscenarioNivel1.png");
+        Ventanas escenaJuego = new Ventanas(ventana, anchoVentana, altoVentana, "Cook And Query", "src/main/resources/EscenarioNivel1.png");
 
         // Crear personajes
-        Personaje chef = new Personaje(100, 100, "src/main/resources/SpriteChefFinal/down/1.png");
+        Personaje chef = new Personaje(100, 100, "src/main/resources/SpriteChefFinal/down/1.png", 70, 70);
         Personaje chefAnimado = new Personaje(300, 200, 70, 70, "src/main/resources/SpriteChefFinal/down", 7, "", 30);
         Personaje NuevoChef = new Personaje(300, 300, 70, 70, "src/main/resources/SpriteChefFinal/up", 7, "up", 30);
 
@@ -70,7 +69,7 @@ public class Juego extends Application {
                 escenaJuego.dibujarVentanaConFondos();
 
                 // Actualizar y dibujar personajes
-                // chef.dibujar(gc);
+                chef.dibujar(gc);
                 chefAnimado.refrescarAnimacion(now, gc, animaciones);
                 NuevoChef.refrescarAnimacion(now, gc, animaciones);
 
