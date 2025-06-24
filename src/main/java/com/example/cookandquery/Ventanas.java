@@ -35,6 +35,13 @@ public class Ventanas {
         }
     }
 
+    public void dibujarVentanaConFondos(){
+        if (fondo != null) {
+            double mitadAlto = alto / 1.7;
+            graficos.drawImage(fondo, 0, 0, ancho, mitadAlto);
+        }
+    }
+
     private void inicializarVentana(Stage ventana, String titulo, Image fondoInicial) {
         Group root = new Group();
         this.escena = new Scene(root, ancho, alto);

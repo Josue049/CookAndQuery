@@ -15,8 +15,10 @@ public class Juego extends Application {
 
     @Override
     public void start(Stage ventana) {
-        final int anchoVentana = 800;
-        final int altoVentana = 500;
+        final int anchoVentana = 900;
+        final int altoVentana = 900;
+
+
 
         // Crear ventana con fondo
         Ventanas escenaJuego = new Ventanas(ventana, anchoVentana, altoVentana, "Cook And Query",
@@ -65,7 +67,7 @@ public class Juego extends Application {
                 gc.clearRect(0, 0, anchoVentana, altoVentana);
 
                 // Redibujar fondo para que se vea siempre
-                escenaJuego.dibujarFondo();
+                escenaJuego.dibujarVentanaConFondos();
 
                 // Actualizar y dibujar personajes
                 // chef.dibujar(gc);
