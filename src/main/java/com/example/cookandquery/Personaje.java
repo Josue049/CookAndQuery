@@ -1,4 +1,6 @@
 package com.example.cookandquery;
+import com.almasb.fxgl.procedural.HeightMapGenerator.HeightData;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -12,22 +14,26 @@ public class Personaje {
     private long velocidadAnimacion; // 150 ms por frame
     private boolean usarAnimacion = false;
     private GraphicsContext gc;
+    private int alto;
+    private int ancho;
 
     // Constructor para imagen estática
     public Personaje(double x, double y, String rutaImagen) {
         this.x = x;
         this.y = y;
-        this.sprite = new Image("file:" + rutaImagen, 70, 70, true, true);
+        this.sprite = new Image("file:" + rutaImagen, alto, ancho, true, true);
         this.usarAnimacion = false;
     }
 
     // Constructor para animación
-    public Personaje(double x, double y, String carpetaSprites, int cantidadFrames, String nombrearchivos, int velocidadAnimacion) {
+    public Personaje(double x, double y, int tamx, int tamy, String carpetaSprites, int cantidadFrames, String nombrearchivos, int velocidadAnimacion) {
         this.x = x;
         this.y = y;
         this.animaciones = new Image[cantidadFrames];
         this.velocidadAnimacion = velocidadAnimacion * 1_000_000; // nanosegundos
         this.usarAnimacion = true;
+        alto = tamy;
+        ancho = tamx;
     }
 
     // Método para actualizar el frame de animación

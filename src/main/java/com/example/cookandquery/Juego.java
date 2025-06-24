@@ -24,12 +24,13 @@ public class Juego extends Application {
 
         // Crear personajes
         Personaje chef = new Personaje(100, 100, "src/main/resources/SpriteChefFinal/down/1.png");
-        Personaje chefAnimado = new Personaje(300, 200, "src/main/resources/SpriteChefFinal/down", 7, "", 30);
-        Personaje NuevoChef = new Personaje(300, 300, "src/main/resources/SpriteChefFinal/up", 7, "up", 30);
+        Personaje chefAnimado = new Personaje(300, 200, 70, 70, "src/main/resources/SpriteChefFinal/down", 7, "", 30);
+        Personaje NuevoChef = new Personaje(300, 300, 70, 70, "src/main/resources/SpriteChefFinal/up", 7, "up", 30);
 
         // Obtener el contexto gráfico
         GraphicsContext gc = escenaJuego.getGraficos();
         Set<KeyCode> teclasActivas = new HashSet<>();
+
         escenaJuego.getEscena().setOnKeyPressed(e -> teclasActivas.add(e.getCode()));
         escenaJuego.getEscena().setOnKeyReleased(e -> teclasActivas.remove(e.getCode()));
 
@@ -63,7 +64,7 @@ public class Juego extends Application {
                 // Limpiar pantalla
                 gc.clearRect(0, 0, anchoVentana, altoVentana);
 
-                // Redibujar fondo (si quieres que se vea siempre)
+                // Redibujar fondo para que se vea siempre
                 escenaJuego.dibujarFondo();
 
                 // Actualizar y dibujar personajes
