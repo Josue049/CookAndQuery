@@ -3,7 +3,8 @@ module com.example.cookandquery {
     requires javafx.fxml;
     requires javafx.web;
     requires javafx.media;
-
+    requires javafx.graphics;
+    requires javafx.base;
 
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;

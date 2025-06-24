@@ -18,8 +18,6 @@ public class Juego extends Application {
         final int anchoVentana = 900;
         final int altoVentana = 900;
 
-
-
         // Crear ventana con fondo
         Ventanas escenaJuego = new Ventanas(ventana, anchoVentana, altoVentana, "Cook And Query", "src/main/resources/EscenarioNivel1.png");
 
