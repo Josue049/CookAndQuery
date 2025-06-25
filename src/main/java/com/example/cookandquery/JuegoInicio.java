@@ -30,6 +30,7 @@ public class JuegoInicio extends Application {
     @Override
     public void start(Stage ventana) {
 
+
         // Crear ventana con fondo
         Ventanas escenaJuego = new Ventanas(ventana, anchoVentana, altoVentana, "Cook And Query: Inicio");
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
@@ -86,11 +87,10 @@ public class JuegoInicio extends Application {
 
                 if ((teclasActivas.contains(KeyCode.ENTER) )) {
                     if (Start) {
-                        // Ejecutar la nueva ventana o clase (por ejemplo, JuegoSelector)
                         try {
+                            Start=false;
                             mediaPlayer.stop();
                             new JuegoSelector().start(new Stage());
-                            Start=false;
                             ventana.close();
                         } catch (Exception ex) {
                             ex.printStackTrace();

@@ -20,6 +20,7 @@ public class JuegoTablas extends Application {
     String path = getClass().getResource("/CriticalTheme.wav").toExternalForm();
     Media media = new Media(path);
     MediaPlayer mediaPlayer = new MediaPlayer(media);
+    private boolean Start = true;
 
     @Override
     public void start(Stage ventana) {
@@ -57,9 +58,17 @@ public class JuegoTablas extends Application {
                 MantelFondo.refrescarAnimacion(now, gc, MantelMov);
                 tablaNivel1.dibujar(gc);
 
-                // LÓGICA FLECHA IZQUIERDA
-                if ((teclasActivas.contains(KeyCode.LEFT) || teclasActivas.contains(KeyCode.A))) {
-                    
+                if ((teclasActivas.contains(KeyCode.ENTER) )) {
+                    if (Start) {
+                        try {
+                            Start=false;
+                            mediaPlayer.stop();
+                            new Juego().start(new Stage());
+                            ventana.close();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
                 }
             }
         }.start();

@@ -15,8 +15,8 @@ public class Juego extends Application {
 
     @Override
     public void start(Stage ventana) {
-        final int anchoVentana = 900;
-        final int altoVentana = 900;
+        final int anchoVentana = 500;
+        final int altoVentana = 600;
 
         // Crear ventana con fondo
         Ventanas escenaJuego = new Ventanas(ventana, anchoVentana, altoVentana, "Cook And Query", "src/main/resources/EscenarioNivel1.png");

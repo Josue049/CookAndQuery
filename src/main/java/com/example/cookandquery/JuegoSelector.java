@@ -30,6 +30,7 @@ public class JuegoSelector extends Application {
     boolean flechaDerActiva = false;
     int momentoIzq = -100;
     int momentoDer = -100;
+    private boolean Start = true;
 
     @Override
     public void start(Stage ventana) {
@@ -120,13 +121,29 @@ public class JuegoSelector extends Application {
                 }
 
                 if ((teclasActivas.contains(KeyCode.ENTER) )) {
-                try {
-                    mediaPlayer.stop();
-                    new Juego().start(new Stage());
-                    ventana.close();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                    if (Start) {
+                        try {
+                            Start=false;
+                            mediaPlayer.stop();
+                            new JuegoTablas().start(new Stage());
+                            ventana.close();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
                 }
+
+                if ((teclasActivas.contains(KeyCode.ENTER) )) {
+                    if (Start) {
+                        try {
+                            Start=false;
+                            mediaPlayer.stop();
+                            new JuegoTablas().start(new Stage());
+                            ventana.close();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
                 }
 
                 // DIBUJO FINAL
