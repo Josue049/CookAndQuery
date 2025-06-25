@@ -15,6 +15,7 @@ import javafx.scene.media.MediaPlayer;
 public class JuegoInicio extends Application {
     private Image[] animaciones = new Image[8];
     private Image[] animacionesP1 = new Image[8];
+    private String[] disfracez = { "normal", "time" , "fire", "fast"};
     final int anchoVentana = 800;
     final int altoVentana = 450;
     String path = getClass().getResource("/SwitchWithMeTheme.wav").toExternalForm();
@@ -49,8 +50,12 @@ public class JuegoInicio extends Application {
         // Cargar animaciones
         Image[] normalGiroImages = new Image[8];
         Image[] fastGiroImages = new Image[8];
+        Image[] timeGiroImages = new Image[8];
+        Image[] fireGiroImages = new Image[8];
         cargarAnimacion("src/main/resources/Giro", "normal", normalGiroImages, 209, 263);
         cargarAnimacion("src/main/resources/Giro", "fast", fastGiroImages, 209, 263);
+        cargarAnimacion("src/main/resources/Giro", "fire", fireGiroImages, 209, 263);
+        cargarAnimacion("src/main/resources/Giro", "time", timeGiroImages, 209, 263);
 
         animacionesP1 = normalGiroImages; // Asignar la animación de normalGiro a animacionesP1
 

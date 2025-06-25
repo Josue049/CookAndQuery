@@ -31,14 +31,14 @@ public class JuegoSelector extends Application {
     int momentoIzq = -100;
     int momentoDer = -100;
     private boolean Start = true;
+    int indexDisfraz = 0; // Índice del disfraz actual
 
     @Override
     public void start(Stage ventana) {
 
         // Crear ventana con fondo
         Ventanas escenaJuego = new Ventanas(ventana, anchoVentana, altoVentana, "Cook And Query: Selector");
-        Personaje MantelFondo = new Personaje(0, 0, anchoVentana + aumento, altoVentana + aumento,
-                "src/main/resources/FondosSeleccion", 8, "fondo", 150);
+        Personaje MantelFondo = new Personaje(0, 0, anchoVentana + aumento, altoVentana + aumento, "src/main/resources/FondosSeleccion", 8, "fondo", 150);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mediaPlayer.play();
 
@@ -62,12 +62,21 @@ public class JuegoSelector extends Application {
         Image[] MantelMov = new Image[8];
         Image[] normalGiroImages = new Image[8];
         Image[] fastGiroImages = new Image[8];
-        cargarAnimacion("src/main/resources/FondosSeleccion", "fondo", MantelMov, anchoVentana + aumento,
-                altoVentana + aumento);
+        Image[] timeGiroImages = new Image[8];
+        Image[] fireGiroImages = new Image[8];
+        cargarAnimacion("src/main/resources/FondosSeleccion", "fondo", MantelMov, anchoVentana + aumento, altoVentana + aumento);
         cargarAnimacion("src/main/resources/Giro", "normal", normalGiroImages, 209, 263);
         cargarAnimacion("src/main/resources/Giro", "fast", fastGiroImages, 209, 263);
+        cargarAnimacion("src/main/resources/Giro", "fire", fireGiroImages, 209, 263);
+        cargarAnimacion("src/main/resources/Giro", "time", timeGiroImages, 209, 263);
 
-        animacionesP1 = normalGiroImages; // Asignar la animación de normalGiro a animacionesP1
+        Image[][] disfraces = new Image[4][]; // Lista de 4 listas
+        disfraces[0] = normalGiroImages;
+        disfraces[1] = timeGiroImages;
+        disfraces[2] = fireGiroImages;
+        disfraces[3] = fastGiroImages;
+
+        animacionesP1 = disfraces[0]; // Asignar la animación de normalGiro a animacionesP1
 
         // LOOP DEL JUEGO
         new AnimationTimer() {
@@ -90,10 +99,13 @@ public class JuegoSelector extends Application {
                     flechaizq.setSprite("src/main/resources/FondosSeleccion/flechaizqGrande.png", 48, 70, 27, 305);
                     momentoIzq = i;
                     flechaIzqActiva = true;
-                    if (animacionesP1 == normalGiroImages) {
-                        animacionesP1 = fastGiroImages; // Cambiar a animación normal
+
+                    if (animacionesP1 == disfraces[0]) {
+                        indexDisfraz=disfraces.length - 1;
+                        animacionesP1 = disfraces[indexDisfraz]; 
                     } else {
-                        animacionesP1 = normalGiroImages; // Cambiar a animación rápida
+                        indexDisfraz--;
+                        animacionesP1 = disfraces[indexDisfraz]; // Cambiar a animación de fuego
                     }
                 }
                 if (flechaIzqActiva && i - momentoIzq >= 10) {
@@ -109,10 +121,12 @@ public class JuegoSelector extends Application {
                     flechader.setSprite("src/main/resources/FondosSeleccion/flechaderGrande.png", 48, 70, 358, 305);
                     momentoDer = i;
                     flechaDerActiva = true;
-                    if (animacionesP1 == normalGiroImages) {
-                        animacionesP1 = fastGiroImages; // Cambiar a animación normal
+                    if (animacionesP1 != disfraces[disfraces.length - 1]) {
+                        indexDisfraz++;
+                        animacionesP1 = disfraces[indexDisfraz]; // Cambiar a animación de fuego
                     } else {
-                        animacionesP1 = normalGiroImages; // Cambiar a animación rápida
+                        indexDisfraz = 0;
+                        animacionesP1 = disfraces[indexDisfraz]; // Cambiar a animación normal
                     }
                 }
                 if (flechaDerActiva && i - momentoDer >= 10) {
