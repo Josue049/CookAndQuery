@@ -15,14 +15,14 @@ public class Juego extends Application {
 
     @Override
     public void start(Stage ventana) {
-        final int anchoVentana = 500;
-        final int altoVentana = 600;
+        final int anchoVentana = 770;
+        final int altoVentana = 915;
 
         // Crear ventana con fondo
-        Ventanas escenaJuego = new Ventanas(ventana, anchoVentana, altoVentana, "Cook And Query", "src/main/resources/EscenarioNivel1.png");
+        Ventanas escenaJuego = new Ventanas(ventana, 648, 715, "Cook And Query");
 
         // Crear personajes
-        Personaje chef = new Personaje(100, 100, "src/main/resources/SpriteChefFinal/down/1.png", 70, 70);
+        Personaje FondoCocina = new Personaje(0, 0, "src/main/resources/FondoReal.png", altoVentana, anchoVentana);
         Personaje chefAnimado = new Personaje(300, 200, 70, 70, "src/main/resources/SpriteChefFinal/down", 7, "", 30);
         Personaje NuevoChef = new Personaje(300, 300, 70, 70, "src/main/resources/SpriteChefFinal/up", 7, "up", 30);
 
@@ -67,7 +67,9 @@ public class Juego extends Application {
                 escenaJuego.dibujarVentanaConFondos();
 
                 // Actualizar y dibujar personajes
-                chef.dibujar(gc);
+                FondoCocina.dibujar(gc);
+
+
                 chefAnimado.refrescarAnimacion(now, gc, animaciones);
                 NuevoChef.refrescarAnimacion(now, gc, animaciones);
 
