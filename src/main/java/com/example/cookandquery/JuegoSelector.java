@@ -44,7 +44,7 @@ public class JuegoSelector extends Application {
 
         Personaje fondoGris = new Personaje(80, 86, "src/main/resources/FondosSeleccion/fondoGris.png", 267, 365);
         Personaje fondoGrisP2 = new Personaje(456, 86, "src/main/resources/FondosSeleccion/fondoGris.png", 267, 365);
-        Personaje incognita = new Personaje(483, 189, "src/main/resources/Giro/incognita.png", 208, 256);
+        Personaje misterio = new Personaje(483, 189, "src/main/resources/Giro/misterio.png", 208, 256);
         Personaje p1 = new Personaje(189, 120, "src/main/resources/FondosSeleccion/p1.png", 43, 32);
         Personaje p2 = new Personaje(563, 120, "src/main/resources/FondosSeleccion/p2.png", 43, 32);
         Personaje flechader = new Personaje(358, 322, "src/main/resources/FondosSeleccion/flechader.png", 36, 25);
@@ -64,17 +64,20 @@ public class JuegoSelector extends Application {
         Image[] fastGiroImages = new Image[8];
         Image[] timeGiroImages = new Image[8];
         Image[] fireGiroImages = new Image[8];
+        Image[] profeGiroImages = new Image[8];
         cargarAnimacion("src/main/resources/FondosSeleccion", "fondo", MantelMov, anchoVentana + aumento, altoVentana + aumento);
         cargarAnimacion("src/main/resources/Giro", "normal", normalGiroImages, 209, 263);
         cargarAnimacion("src/main/resources/Giro", "fast", fastGiroImages, 209, 263);
         cargarAnimacion("src/main/resources/Giro", "fire", fireGiroImages, 209, 263);
         cargarAnimacion("src/main/resources/Giro", "time", timeGiroImages, 209, 263);
+        cargarAnimacion("src/main/resources/Giro", "profe", profeGiroImages, 209, 263);
 
-        Image[][] disfraces = new Image[4][]; // Lista de 4 listas
+        Image[][] disfraces = new Image[5][]; // Lista de 4 listas
         disfraces[0] = normalGiroImages;
         disfraces[1] = timeGiroImages;
         disfraces[2] = fireGiroImages;
         disfraces[3] = fastGiroImages;
+        disfraces[4] = profeGiroImages;
 
         animacionesP1 = disfraces[0]; // Asignar la animación de normalGiro a animacionesP1
 
@@ -105,7 +108,7 @@ public class JuegoSelector extends Application {
                         animacionesP1 = disfraces[indexDisfraz]; 
                     } else {
                         indexDisfraz--;
-                        animacionesP1 = disfraces[indexDisfraz]; // Cambiar a animación de fuego
+                        animacionesP1 = disfraces[indexDisfraz];
                     }
                 }
                 if (flechaIzqActiva && i - momentoIzq >= 10) {
@@ -163,7 +166,7 @@ public class JuegoSelector extends Application {
                 // DIBUJO FINAL
                 flechader.dibujar(gc);
                 flechaizq.dibujar(gc);
-                incognita.dibujar(gc);
+                misterio.dibujar(gc);
 
                 i++;
             }
