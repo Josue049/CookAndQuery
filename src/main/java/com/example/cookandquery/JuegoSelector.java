@@ -42,9 +42,9 @@ public class JuegoSelector extends Application {
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mediaPlayer.play();
 
-        Personaje fondoGris = new Personaje(80, 86, "src/main/resources/FondosSeleccion/fondoGris.png", 267, 365);
-        Personaje fondoGrisP2 = new Personaje(456, 86, "src/main/resources/FondosSeleccion/fondoGris.png", 267, 365);
-        Personaje misterio = new Personaje(483, 189, "src/main/resources/Giro/misterio.png", 208, 256);
+        Personaje fondoGris = new Personaje(80, 86, "src/main/resources/FondosSeleccion/fondoGris.png", 370, 365);
+        Personaje fondoGrisP2 = new Personaje(456, 86, "src/main/resources/FondosSeleccion/fondoGris.png", 370, 365);
+        Personaje misterio = new Personaje(483, 189, "src/main/resources/Giro/misterio.png", 245, 209);
         Personaje p1 = new Personaje(189, 120, "src/main/resources/FondosSeleccion/p1.png", 43, 32);
         Personaje p2 = new Personaje(563, 120, "src/main/resources/FondosSeleccion/p2.png", 43, 32);
         Personaje flechader = new Personaje(358, 322, "src/main/resources/FondosSeleccion/flechader.png", 36, 25);

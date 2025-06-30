@@ -23,7 +23,7 @@ public class Personaje {
         this.y = y;
         this.alto = alto;
         this.ancho = ancho;
-        this.sprite = new Image("file:" + rutaImagen, alto, ancho, true, true);
+        this.sprite = new Image("file:" + rutaImagen,ancho, alto, true, true);
         this.usarAnimacion = false;
     }
 
