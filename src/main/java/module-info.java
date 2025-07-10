@@ -1,9 +1,9 @@
 module com.example.cookandquery {
+    requires transitive javafx.graphics;
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
     requires javafx.media;
-    requires javafx.graphics;
     requires javafx.base;
 
     requires org.controlsfx.controls;

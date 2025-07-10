@@ -71,6 +71,10 @@ public class Personaje {
         y += dy;
     }
 
+    public void posicionarx(double x) {
+        this.x = x;
+    }
+
     // Getters y Setters
     public double getX() {
         return x;
