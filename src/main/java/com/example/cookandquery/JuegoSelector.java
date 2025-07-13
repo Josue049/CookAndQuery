@@ -28,10 +28,13 @@ public class JuegoSelector extends Application {
     int i = 0;
     boolean flechaIzqActiva = false;
     boolean flechaDerActiva = false;
+    boolean flechaIzqActivaB = false;
+    boolean flechaDerActivaB = false;
     int momentoIzq = -100;
     int momentoDer = -100;
     private boolean Start = true;
-    int indexDisfraz = 0; // Índice del disfraz actual
+    int indexDisfraz = 0;
+    private String disfraz;
 
     @Override
     public void start(Stage ventana) {
@@ -42,14 +45,18 @@ public class JuegoSelector extends Application {
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mediaPlayer.play();
 
-        Personaje fondoGris = new Personaje(80, 86, "src/main/resources/FondosSeleccion/fondoGris.png", 370, 365);
-        Personaje fondoGrisP2 = new Personaje(456, 86, "src/main/resources/FondosSeleccion/fondoGris.png", 370, 365);
-        Personaje misterio = new Personaje(483, 189, "src/main/resources/Giro/misterio.png", 245, 209);
-        Personaje p1 = new Personaje(189, 120, "src/main/resources/FondosSeleccion/p1.png", 43, 32);
-        Personaje p2 = new Personaje(563, 120, "src/main/resources/FondosSeleccion/p2.png", 43, 32);
-        Personaje flechader = new Personaje(358, 322, "src/main/resources/FondosSeleccion/flechader.png", 36, 25);
-        Personaje flechaizq = new Personaje(50, 322, "src/main/resources/FondosSeleccion/flechaizq.png", 36, 25);
-        Personaje normalGiro = new Personaje(109, 181, 209, 263, "src/main/resources/Giro", 8, "normal", 120);
+        Personaje fondoGris = new Personaje(280, 86, "src/main/resources/FondosSeleccion/fondoGris.png", 370, 365);
+
+        Personaje key1 = new Personaje(295, 105, "src/main/resources/key1.png", 47, 242);
+
+
+        // Personaje misterio = new Personaje(483, 189, "src/main/resources/Giro/misterio.png", 245, 209);
+
+
+        Personaje flechader = new Personaje(558, 322, "src/main/resources/FondosSeleccion/flechader.png", 36, 25);
+        Personaje flechaizq = new Personaje(240, 322, "src/main/resources/FondosSeleccion/flechaizq.png", 36, 25);
+        Personaje normalGiro = new Personaje(309, 181, 209, 263, "src/main/resources/Giro", 8, "normal", 120);
+
 
         // Obtener el contexto gráfico
         GraphicsContext gc = escenaJuego.getGraficos();
@@ -89,17 +96,14 @@ public class JuegoSelector extends Application {
 
                 MantelFondo.refrescarAnimacion(now, gc, MantelMov);
                 fondoGris.dibujar(gc);
-                fondoGrisP2.dibujar(gc);
-                p1.dibujar(gc);
-                p2.dibujar(gc);
                 normalGiro.refrescarAnimacion(now, gc, animacionesP1);
 
                 // LÓGICA FLECHA IZQUIERDA
-                if ((teclasActivas.contains(KeyCode.LEFT) || teclasActivas.contains(KeyCode.A)) && !flechaIzqActiva) {
+                if ((teclasActivas.contains(KeyCode.A) && !flechaIzqActiva) || teclasActivas.contains(KeyCode.LEFT) && !flechaIzqActiva) {
                     MediaPlayer efecto = new MediaPlayer(mediaEffect);
                     efecto.play();
 
-                    flechaizq.setSprite("src/main/resources/FondosSeleccion/flechaizqGrande.png", 48, 70, 27, 305);
+                    flechaizq.setSprite("src/main/resources/FondosSeleccion/flechaizqGrande.png", 48, 70, 217, 305);
                     momentoIzq = i;
                     flechaIzqActiva = true;
 
@@ -112,16 +116,16 @@ public class JuegoSelector extends Application {
                     }
                 }
                 if (flechaIzqActiva && i - momentoIzq >= 10) {
-                    flechaizq.setSprite("src/main/resources/FondosSeleccion/flechaizq.png", 36, 25, 50, 322);
+                    flechaizq.setSprite("src/main/resources/FondosSeleccion/flechaizq.png", 36, 25, 240, 322);
                     flechaIzqActiva = false;
                 }
 
                 // LÓGICA FLECHA DERECHA
-                if ((teclasActivas.contains(KeyCode.RIGHT) || teclasActivas.contains(KeyCode.D)) && !flechaDerActiva) {
+                if ((teclasActivas.contains(KeyCode.D) && !flechaDerActiva) || teclasActivas.contains(KeyCode.RIGHT) && !flechaDerActiva) {
                     MediaPlayer efecto = new MediaPlayer(mediaEffect);
                     efecto.play();
 
-                    flechader.setSprite("src/main/resources/FondosSeleccion/flechaderGrande.png", 48, 70, 358, 305);
+                    flechader.setSprite("src/main/resources/FondosSeleccion/flechaderGrande.png", 48, 70, 558, 305);
                     momentoDer = i;
                     flechaDerActiva = true;
                     if (animacionesP1 != disfraces[disfraces.length - 1]) {
@@ -133,29 +137,29 @@ public class JuegoSelector extends Application {
                     }
                 }
                 if (flechaDerActiva && i - momentoDer >= 10) {
-                    flechader.setSprite("src/main/resources/FondosSeleccion/flechader.png", 36, 25, 358, 322);
+                    flechader.setSprite("src/main/resources/FondosSeleccion/flechader.png", 36, 25, 558, 322);
                     flechaDerActiva = false;
                 }
 
-                if ((teclasActivas.contains(KeyCode.ENTER) )) {
+                if ((teclasActivas.contains(KeyCode.SPACE) )) {
                     if (Start) {
                         try {
+                            if (indexDisfraz == 0) {
+                                disfraz = "normal";
+                            } else if (indexDisfraz == 1) {
+                                disfraz = "time";
+                            } else if (indexDisfraz == 2) {
+                                disfraz = "fire";
+                            } else if (indexDisfraz == 3) {
+                                disfraz = "fast";
+                            } else if (indexDisfraz == 4) {
+                                disfraz = "profe";
+                            }
                             Start=false;
                             mediaPlayer.stop();
-                            new JuegoTablas().start(new Stage());
-                            ventana.close();
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                    }
-                }
-
-                if ((teclasActivas.contains(KeyCode.ENTER) )) {
-                    if (Start) {
-                        try {
-                            Start=false;
-                            mediaPlayer.stop();
-                            new JuegoTablas().start(new Stage());
+                            JuegoTablas juego = new JuegoTablas();
+                            juego.setDatos(disfraz);
+                            juego.start(new Stage());
                             ventana.close();
                         } catch (Exception ex) {
                             ex.printStackTrace();
@@ -166,7 +170,10 @@ public class JuegoSelector extends Application {
                 // DIBUJO FINAL
                 flechader.dibujar(gc);
                 flechaizq.dibujar(gc);
-                misterio.dibujar(gc);
+                // misterio.dibujar(gc);
+
+                key1.dibujar(gc);
+
 
                 i++;
             }

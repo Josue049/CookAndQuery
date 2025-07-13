@@ -21,10 +21,16 @@ public class JuegoTablas extends Application {
     Media media = new Media(path);
     MediaPlayer mediaPlayer = new MediaPlayer(media);
     private boolean Start = true;
+    private String disfraz;
+
+
+    public void setDatos(String disfraz) {
+        this.disfraz = disfraz;
+    }
+
 
     @Override
     public void start(Stage ventana) {
-
         // Crear ventana con fondo
         Ventanas escenaJuego = new Ventanas(ventana, anchoVentana, altoVentana, "Cook And Query: Tabla Nivel 1");
         Personaje MantelFondo = new Personaje(0, 0, anchoVentana + aumento, altoVentana + aumento,
@@ -58,12 +64,14 @@ public class JuegoTablas extends Application {
                 MantelFondo.refrescarAnimacion(now, gc, MantelMov);
                 tablaNivel1.dibujar(gc);
 
-                if ((teclasActivas.contains(KeyCode.ENTER) )) {
+                if ((teclasActivas.contains(KeyCode.SPACE) )) {
                     if (Start) {
                         try {
                             Start=false;
                             mediaPlayer.stop();
-                            new Juego().start(new Stage());
+                            Juego juego = new Juego();
+                            juego.setDatos(disfraz);
+                            juego.start(new Stage());
                             ventana.close();
                         } catch (Exception ex) {
                             ex.printStackTrace();

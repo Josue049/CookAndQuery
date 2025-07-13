@@ -23,7 +23,7 @@ public class Personaje {
         this.y = y;
         this.alto = alto;
         this.ancho = ancho;
-        this.sprite = new Image("file:" + rutaImagen,ancho, alto, true, true);
+        this.sprite = new Image("file:" + rutaImagen, ancho, alto, true, true);
         this.usarAnimacion = false;
     }
 
@@ -80,6 +80,11 @@ public class Personaje {
         return x;
     }
 
+
+    public void setX(int x) {
+        this.x=x;
+    }
+
     public double getY() {
         return y;
     }
@@ -90,9 +95,12 @@ public class Personaje {
         this.y = y;
         this.usarAnimacion = false; // Cambia a imagen estática
     }
+
+    public Image getSprite() {
+        return sprite;
+    }
+
+    public void cambioSprite(Image sprite) {
+        this.sprite = sprite;
+    }
 }
-// Nota de Josué para Boris: Asegúrate de que las rutas de las imágenes sean
-// correctas y que los archivos existan en el directorio especificado, no hay
-// manejo de errores para eso.
-// Tambien puedes ajustar la velocidad de animación y el tamaño del sprite, pero
-// yo lo estoy dejando fijo por el momento xd.
